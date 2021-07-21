@@ -16,7 +16,7 @@ application{
 }
 
 group = "com.chrhenry"
-version = "1"
+version = "1.0"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 configurations {
@@ -62,6 +62,10 @@ tasks.withType<Test> {
 tasks.withType<BootBuildImage> {
 	builder = "paketobuildpacks/builder:tiny"
 	environment = mapOf("BP_NATIVE_IMAGE" to "true")
+}
+
+tasks.getByName<Jar>("jar") {
+	enabled = false
 }
 
 task("stage") {
