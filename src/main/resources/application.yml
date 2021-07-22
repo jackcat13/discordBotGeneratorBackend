@@ -2,5 +2,6 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://discordbotgeneratoruser:keeuP9ZqJ69T1VVO@cluster0.5hegy.mongodb.net/discordbotgenerator?retryWrites=true&w=majority
+      database: discordbotgenerator
 server:
   port: 8080

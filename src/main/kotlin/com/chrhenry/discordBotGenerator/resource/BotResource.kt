@@ -1,18 +1,29 @@
 package com.chrhenry.discordBotGenerator.resource
 
-import com.chrhenry.discordBotGenerator.dto.Bot
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RestController
+import com.chrhenry.discordBotGenerator.dto.BotApiDto
+import com.chrhenry.discordBotGenerator.mapper.map
+import com.chrhenry.discordBotGenerator.service.BotService
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 @RestController()
-class BotResource {
+class BotResource(private val botService: BotService) {
 
     @GetMapping("/bots")
-    fun getBots(): Flux<Bot>{
-        return Flux.just(
-                Bot("PandemicBot", "Discord bot for the pandemic game"),
-                Bot("PandemicDarkRp", "Discord bot for the pandemic dark RP GMod server")
-        )
+    @ResponseBody
+    fun getBotsForUser(@RequestParam userId: String): Flux<BotApiDto>{
+        return botService.getBotsForUser(userId)
+                .doOnNext { println("onNext: Bot $it to be returned to consumer") }
+                .map { it.map() }
+                .doOnSubscribe { println("Return Bots dtos to consumer") };
+    }
+
+    @PostMapping("/bots")
+    fun createBot(@RequestBody botApiDto: BotApiDto): Mono<BotApiDto> {
+        return botService.createBot(botApiDto.map())
+                .map { it.map() }
+                .doOnSuccess { println("Bot $it created") }
+                .doOnSubscribe { println("Creating bot $it") }
     }
 }
