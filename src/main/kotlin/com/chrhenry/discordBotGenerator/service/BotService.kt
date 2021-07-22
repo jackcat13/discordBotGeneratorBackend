@@ -21,4 +21,10 @@ class BotService(private val botRepository: BotRepository) {
                 .doOnSuccess { println("Created bot entity $it") }
                 .doOnSubscribe { println("Creating bot entity $it") }
     }
+
+    fun deleteBot(botId: String): Mono<Void> {
+        return botRepository.deleteById(botId)
+                .doOnSuccess { println("bot entity $it deleted") }
+                .doOnSubscribe{ println("Deleting bot entity $it") }
+    }
 }

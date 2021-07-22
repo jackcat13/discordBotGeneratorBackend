@@ -26,4 +26,11 @@ class BotResource(private val botService: BotService) {
                 .doOnSuccess { println("Bot $it created") }
                 .doOnSubscribe { println("Creating bot $it") }
     }
+
+    @DeleteMapping("/bots/{id}")
+    fun deleteBot(@PathVariable id: String): Mono<Void>{
+        return botService.deleteBot(id)
+                .doOnSuccess { println("Bot $it deleted") }
+                .doOnSubscribe { println("Deleting bot $it") }
+    }
 }
