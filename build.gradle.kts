@@ -6,13 +6,6 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	kotlin("jvm") version "1.5.20"
 	kotlin("plugin.spring") version "1.5.20"
-	id("org.springframework.experimental.aot") version "0.10.1"
-	id("org.graalvm.buildtools.native") version "0.9.1"
-	application
-}
-
-application{
-	applicationDefaultJvmArgs = listOf("-Djdk.tls.client.protocols=TLSv1.2")
 }
 
 group = "com.chrhenry"

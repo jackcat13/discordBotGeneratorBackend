@@ -1,7 +1,7 @@
 package com.chrhenry.discordBotGenerator.service
 
-import com.chrhenry.discordBotGenerator.bot.BotStarter
 import com.chrhenry.discordBotGenerator.entity.Bot
+import com.chrhenry.discordBotGenerator.jda.BotStarter
 import org.springframework.stereotype.Service
 
 @Service
