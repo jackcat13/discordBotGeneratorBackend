@@ -16,7 +16,7 @@ class BotService(private val botRepository: BotRepository) {
                 .doOnSubscribe { println("Retrieve user by id $userId") }
     }
 
-    fun createBot(bot: Bot): Mono<Bot> {
+    fun createOrUpdateBot(bot: Bot): Mono<Bot> {
         return botRepository.save(bot)
                 .doOnSuccess { println("Created bot entity $it") }
                 .doOnSubscribe { println("Creating bot entity $it") }
