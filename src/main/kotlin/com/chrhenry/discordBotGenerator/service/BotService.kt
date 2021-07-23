@@ -8,7 +8,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Service
-class BotService(private val botRepository: BotRepository) {
+class BotService(private val botRepository: BotRepository, private val jdaStarterService: JdaStarterService) {
 
     fun getBotsForUser(userId: String): Flux<Bot> {
         return botRepository.findByUser(User(userId))
@@ -26,5 +26,14 @@ class BotService(private val botRepository: BotRepository) {
         return botRepository.deleteById(botId)
                 .doOnSuccess { println("bot entity $it deleted") }
                 .doOnSubscribe{ println("Deleting bot entity $it") }
+    }
+
+    fun startBot(id: String): Mono<Bot> {
+        lateinit var bot: Bot
+        botRepository.findById(id)
+                .doOnNext { bot = it }
+                .doOnSubscribe{ println("Retrieve bot to start it") }
+        jdaStarterService.startBot(bot);
+        return Mono.just(bot)
     }
 }

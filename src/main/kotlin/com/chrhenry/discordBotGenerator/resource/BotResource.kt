@@ -46,4 +46,12 @@ class BotResource(private val botService: BotService) {
                 .doOnSuccess { println("Bot $botApiDto updated") }
                 .doOnSubscribe { println("Updating bot $botApiDto") }
     }
+
+    @PostMapping("/bots/{id}")
+    fun startBot(@PathVariable id: String): Mono<BotApiDto> {
+        return botService.startBot(id)
+                .map { it.map() }
+                .doOnSuccess { println("Bot $it started") }
+                .doOnSubscribe { println("Starting bot $it") }
+    }
 }
