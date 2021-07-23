@@ -9,4 +9,4 @@ fun Bot.map() = BotApiDto(id, description, user.map(), configuration.map())
 
 fun BotApiDto.map() = Bot(id, description, user.map(), Configuration())
 
-fun BotApiDto.mapWithConfiguration() = Bot(id, description, user.map(), configuration.map())
+fun BotApiDto.mapWithConfiguration() = Bot(id, description, user.map(), configuration!!.map())
