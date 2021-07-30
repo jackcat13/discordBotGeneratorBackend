@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component
 class BotStarter{
 
     companion object {
+        /*
         @JvmStatic
         fun main(args: Array<String>){
             JDABuilder.createDefault("TOBEREPLACED")
@@ -21,6 +22,7 @@ class BotStarter{
                 .addEventListeners(Bot())
                 .build()
         }
+        */
 
         @JvmStatic
         fun run(botConfiguration: Configuration): JDA {
