@@ -30,12 +30,7 @@ class BotService(private val botRepository: BotRepository, private val jdaStarte
                 .doOnSubscribe{ println("Deleting bot entity $it") }
     }
 
-    fun startBot(id: String): Mono<Bot> {
-        lateinit var bot: Bot
-        botRepository.findById(id)
-                .doOnNext { bot = it }
+    fun startBot(id: String): Mono<Bot> = botRepository.findById(id)
+                .doOnNext { jdaStarterService.startBot(it) }
                 .doOnSubscribe{ println("Retrieve bot to start it") }
-        jdaStarterService.startBot(bot);
-        return Mono.just(bot)
-    }
 }
