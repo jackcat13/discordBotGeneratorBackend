@@ -11,6 +11,16 @@ class BotStarter{
 
     companion object {
         @JvmStatic
+        fun main(args: Array<String>){
+            JDABuilder.createDefault("TOBEREPLACED")
+                .setChunkingFilter(ChunkingFilter.ALL) // enable member chunking for all guilds
+                .setMemberCachePolicy(MemberCachePolicy.ALL) // ignored if chunking enabled
+                .enableIntents(GatewayIntent.GUILD_MEMBERS)
+                .addEventListeners(Bot())
+                .build()
+        }
+
+        @JvmStatic
         fun run(botToken: String) = JDABuilder.createDefault(botToken)
             .setChunkingFilter(ChunkingFilter.ALL) // enable member chunking for all guilds
             .setMemberCachePolicy(MemberCachePolicy.ALL) // ignored if chunking enabled
