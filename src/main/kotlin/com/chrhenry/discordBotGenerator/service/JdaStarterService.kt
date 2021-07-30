@@ -12,7 +12,7 @@ class JdaStarterService(private val botStarter: BotStarter) {
     private val botProcesses = mutableSetOf<Pair<String, JDA>>()
 
     fun startBot(bot: Bot) {
-        botProcesses.add(bot.id to BotStarter.run(bot.configuration.token))
+        botProcesses.add(bot.id to BotStarter.run(bot.configuration))
     }
 
     fun getBotServiceStatus(id: String): Boolean = botProcesses.any { it.first == id && it.second.status == CONNECTED }

@@ -1,5 +1,7 @@
 package com.chrhenry.discordBotGenerator.jda
 
+import com.chrhenry.discordBotGenerator.entity.*
+import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.ChunkingFilter
@@ -21,11 +23,15 @@ class BotStarter{
         }
 
         @JvmStatic
-        fun run(botToken: String) = JDABuilder.createDefault(botToken)
-            .setChunkingFilter(ChunkingFilter.ALL) // enable member chunking for all guilds
-            .setMemberCachePolicy(MemberCachePolicy.ALL) // ignored if chunking enabled
-            .enableIntents(GatewayIntent.GUILD_MEMBERS)
-            .addEventListeners(Bot())
-            .build()
+        fun run(botConfiguration: Configuration): JDA {
+            val bot = Bot()
+            bot.configuration = botConfiguration
+            return JDABuilder.createDefault(botConfiguration.token)
+                .setChunkingFilter(ChunkingFilter.ALL) // enable member chunking for all guilds
+                .setMemberCachePolicy(MemberCachePolicy.ALL) // ignored if chunking enabled
+                .enableIntents(GatewayIntent.GUILD_MEMBERS)
+                .addEventListeners(bot)
+                .build()
+        }
     }
 }
