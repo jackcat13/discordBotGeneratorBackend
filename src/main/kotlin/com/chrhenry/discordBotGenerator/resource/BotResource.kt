@@ -24,6 +24,14 @@ class BotResource(private val botService: BotService) {
                 .doOnSubscribe { println("Return Bots dtos to consumer") };
     }
 
+    @GetMapping("/bots/{id}/botAsAServiceStatus")
+    @ResponseBody
+    fun getBotServiceStatusById(@PathVariable id: String): Mono<Boolean>{
+        return botService.getBotServiceStatusById(id)
+                .doOnNext { println("onNext: Bot $id has service status $it to be returned to consumer") }
+                .doOnSubscribe { println("Return bot $id service status to consumer") };
+    }
+
     @PostMapping("/bots")
     fun createBot(@RequestBody botApiDto: BotApiDto): Mono<BotApiDto> {
         return botService.createOrUpdateBot(botApiDto.map())

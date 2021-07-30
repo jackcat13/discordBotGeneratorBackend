@@ -16,6 +16,8 @@ class BotService(private val botRepository: BotRepository, private val jdaStarte
                 .doOnSubscribe { println("Retrieve user by id $userId") }
     }
 
+    fun getBotServiceStatusById(id: String) = Mono.just(jdaStarterService.getBotServiceStatus(id))
+
     fun createOrUpdateBot(bot: Bot): Mono<Bot> {
         return botRepository.save(bot)
                 .doOnSuccess { println("Created bot entity $it") }

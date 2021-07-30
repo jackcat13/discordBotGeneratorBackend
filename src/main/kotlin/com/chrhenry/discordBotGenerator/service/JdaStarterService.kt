@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service
 @Service
 class JdaStarterService(private val botStarter: BotStarter) {
 
-    private val botProcesses = mutableSetOf<Thread>()
+    private val botProcesses = mutableSetOf<Pair<String, Thread>>()
 
     fun startBot(bot: Bot) {
-        botProcesses.add(BotStarter.run(bot.configuration.token))
+        botProcesses.add(bot.id to BotStarter.run(bot.configuration.token))
     }
+
+    fun getBotServiceStatus(id: String) = botProcesses.any { it.first == id && it.second.isAlive }
 }
