@@ -14,8 +14,9 @@ class Bot : ListenerAdapter() {
     }
 
     private fun String.patternMatching(event: MessageReceivedEvent) {
-        when(this){
-            configuration.commands.help -> event.returnHelpPanel(configuration)
+        when{
+            equals(configuration.commands.help) -> event.returnHelpPanel(configuration)
+            startsWith(configuration.commands.sondage) -> event.returnSurvey(configuration)
         }
     }
 }

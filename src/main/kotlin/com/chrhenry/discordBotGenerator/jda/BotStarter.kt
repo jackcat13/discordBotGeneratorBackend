@@ -25,7 +25,7 @@ class BotStarter{
         */
 
         @JvmStatic
-        fun run(botConfiguration: Configuration): JDA {
+        fun run(botConfiguration: Configuration = Configuration()): JDA {
             val bot = Bot().apply { configuration = botConfiguration }
             return JDABuilder.createDefault(botConfiguration.token)
                 .setChunkingFilter(ChunkingFilter.ALL) // enable member chunking for all guilds

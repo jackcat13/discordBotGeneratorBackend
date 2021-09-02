@@ -10,6 +10,19 @@ import java.awt.Color
 
 val logger: Logger = LoggerFactory.getLogger(Bot::class.java)
 
+fun MessageReceivedEvent.returnSurvey(configuration: Configuration) {
+    jda.getTextChannelsByName(configuration.channels.messagesChannel, false)
+            .firstOrNull()
+            ?.sendMessage(message.contentRaw
+                    .substringAfter(configuration.commands.sondage)
+                    .asEmbed("Question: ", Color.ORANGE))
+            ?.queue {
+                it.addReaction("✅").queue()
+                it.addReaction("❌").queue()
+            }
+    logger.info("Survey ${message.contentRaw} has been created")
+}
+
 fun MessageReceivedEvent.returnHelpPanel(configuration: Configuration) {
     member?.user?.openPrivateChannel()
             ?.queue{
