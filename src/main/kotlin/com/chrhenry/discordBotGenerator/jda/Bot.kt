@@ -10,6 +10,14 @@ class Bot : ListenerAdapter() {
 
     override fun onMessageReceived(event: MessageReceivedEvent) {
         if (event.author.isBot) return
-        event.channel.sendMessage("NOT IMPLEMENTED YET").queue()
+        event.message.contentRaw.patternMatching(event)
+    }
+
+    private fun String.patternMatching(event: MessageReceivedEvent) {
+        when(this){
+            configuration.commands.help -> event.returnHelpPanel(configuration)
+        }
     }
 }
+
+
