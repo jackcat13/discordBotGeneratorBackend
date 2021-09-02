@@ -11,6 +11,10 @@ import java.awt.Color
 
 val logger: Logger = LoggerFactory.getLogger(Bot::class.java)
 
+fun Pair<MessageReceivedEvent, Configuration>.ifAdmin(function: () -> Unit) = also { (event, configuration) ->
+    event.member?.roles?.firstOrNull { it.name == configuration.roles.adminRole }?.let { function() } ?: logger.error("You need admin rights to perform this action")
+}
+
 fun MessageReceivedEvent.unmuteUser(configuration: Configuration) {
     val userToUnMute = message.contentRaw.substringAfter(configuration.commands.unMute)
     jda.guilds.map { it.getMembersByEffectiveName(userToUnMute.trim(), false) }

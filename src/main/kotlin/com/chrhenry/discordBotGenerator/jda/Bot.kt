@@ -17,8 +17,8 @@ class Bot : ListenerAdapter() {
         when{
             equals(configuration.commands.help) -> event.returnHelpPanel(configuration)
             startsWith(configuration.commands.sondage) -> event.returnSurvey(configuration)
-            startsWith(configuration.commands.mute) -> event.muteUser(configuration)
-            startsWith(configuration.commands.unMute) -> event.unmuteUser(configuration)
+            startsWith(configuration.commands.mute) -> (event to configuration).ifAdmin { event.muteUser(configuration) }
+            startsWith(configuration.commands.unMute) -> (event to configuration).ifAdmin { event.unmuteUser(configuration) }
         }
     }
 }
