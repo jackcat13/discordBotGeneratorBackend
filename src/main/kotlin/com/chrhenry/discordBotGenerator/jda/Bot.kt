@@ -14,11 +14,12 @@ class Bot : ListenerAdapter() {
     }
 
     private fun String.patternMatching(event: MessageReceivedEvent) {
+        val adminContext = event to configuration
         when{
             equals(configuration.commands.help) -> event.returnHelpPanel(configuration)
             startsWith(configuration.commands.sondage) -> event.returnSurvey(configuration)
-            startsWith(configuration.commands.mute) -> (event to configuration).ifAdmin { event.muteUser(configuration) }
-            startsWith(configuration.commands.unMute) -> (event to configuration).ifAdmin { event.unmuteUser(configuration) }
+            startsWith(configuration.commands.mute) -> adminContext.ifAdmin { event.muteUser(configuration) }
+            startsWith(configuration.commands.unMute) -> adminContext.ifAdmin { event.unmuteUser(configuration) }
         }
     }
 }
