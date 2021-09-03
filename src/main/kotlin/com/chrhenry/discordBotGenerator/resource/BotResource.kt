@@ -5,11 +5,18 @@ import com.chrhenry.discordBotGenerator.entity.Bot
 import com.chrhenry.discordBotGenerator.mapper.map
 import com.chrhenry.discordBotGenerator.mapper.mapWithConfiguration
 import com.chrhenry.discordBotGenerator.service.BotService
+import jdk.jfr.ContentType
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.util.MimeType
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.toMono
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 
 
 @RestController()
@@ -30,6 +37,15 @@ class BotResource(private val botService: BotService) {
         return botService.getBotServiceStatusById(id)
                 .doOnNext { println("onNext: Bot $id has service status $it to be returned to consumer") }
                 .doOnSubscribe { println("Return bot $id service status to consumer") };
+    }
+
+    @GetMapping("/bots/{id}/downloadBotCode")
+    @ResponseBody
+    fun downloadBotById(@PathVariable id: String): ResponseEntity<ByteArray> {
+        return ResponseEntity.ok()
+            .contentType(MediaType.asMediaType(MimeType.valueOf("application/zip")))
+            .headers(HttpHeaders().apply { set("Content-Disposition", "attachment; filename=DATA.zip") })
+            .body(botService.downloadBotById(id).toByteArray())
     }
 
     @PostMapping("/bots")

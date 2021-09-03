@@ -12,17 +12,11 @@ import org.springframework.stereotype.Component
 class BotStarter{
 
     companion object {
-        /*
-        @JvmStatic
+
+        /*@JvmStatic
         fun main(args: Array<String>){
-            JDABuilder.createDefault("TOBEREPLACED")
-                .setChunkingFilter(ChunkingFilter.ALL) // enable member chunking for all guilds
-                .setMemberCachePolicy(MemberCachePolicy.ALL) // ignored if chunking enabled
-                .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                .addEventListeners(Bot())
-                .build()
-        }
-        */
+            run()
+        }*/
 
         @JvmStatic
         fun run(botConfiguration: Configuration = Configuration()): JDA {
