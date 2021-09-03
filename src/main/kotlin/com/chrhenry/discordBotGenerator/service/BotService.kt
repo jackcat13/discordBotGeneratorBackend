@@ -6,13 +6,8 @@ import com.chrhenry.discordBotGenerator.repository.BotRepository
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import reactor.kotlin.core.publisher.toFlux
-import reactor.kotlin.core.publisher.toMono
-import reactor.kotlin.core.publisher.zip
 import java.io.*
-import java.nio.file.Paths
 import java.util.zip.ZipEntry
-import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
 @Service
@@ -43,9 +38,10 @@ class BotService(private val botRepository: BotRepository, private val jdaStarte
                 .doOnSubscribe{ println("Retrieve bot to start it") }
 
     fun downloadBotById(id: String): ByteArrayOutputStream {
+        downloadBotCode(id)
         val zipFile = ByteArrayOutputStream()
         ZipOutputStream(BufferedOutputStream(zipFile)).use {
-            files().forEach { file ->
+            files(id).forEach { file ->
                 file.takeIf { fileOrDir -> fileOrDir.isFile }?.run {
                     it.putNextEntry(ZipEntry(file.absolutePath))
                     it.write(file.readBytes())
@@ -55,12 +51,19 @@ class BotService(private val botRepository: BotRepository, private val jdaStarte
         return zipFile
     }
 
-    private fun files() = File(workingDirectory())
+    private fun downloadBotCode(id: String) {
+        val rm = "rm -rf ./$id"
+        Runtime.getRuntime().exec(rm)
+        val curl = "curl -X GET https://codeload.github.com/jackcat13/discordBotGeneratorBackend/zip/refs/heads/main --output ./$id/DATA.zip"
+        Runtime.getRuntime().exec(curl)
+        val unzip = "unzip ./$id/DATA.zip"
+        Runtime.getRuntime().exec(unzip)
+    }
+
+    private fun files(id: String) = File("./$id/discordBotGeneratorBackend-main")
         .walkTopDown()
         .filterNot { it.absolutePath.notExpectedSource() }
         .toList()
-
-    private fun workingDirectory() = Paths.get("").toAbsolutePath().toString()
 }
 
 private fun String.addSlashIfNotPresent(): String = if (!endsWith("/")) "$this/" else this
